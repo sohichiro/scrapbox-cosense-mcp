@@ -53,8 +53,9 @@ export async function handleGetPage(
     const contentText = readablePage.lines.map(line => line.text).join('\n');
 
     // リンク情報を追加
-    const linksText = `\nLinks:\n${readablePage.links.length > 0 
-      ? readablePage.links.map((link: string) => `- ${link}`).join('\n') 
+    const links = readablePage.links || [];
+    const linksText = `\nLinks:\n${links.length > 0
+      ? links.map((link: string) => `- ${link}`).join('\n')
       : '(None)'}`;
 
     const fullText = `${formattedText}\n\n${contentText}\n${linksText}`;

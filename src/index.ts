@@ -132,8 +132,8 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
     '',
     readablePage.lines.map(line => line.text).join('\n'),
     '',
-    `Links:\n${getPageResult.links.length > 0 
-      ? getPageResult.links.map((link: string) => `- ${link}`).join('\n') 
+    `Links:\n${(getPageResult.links || []).length > 0
+      ? (getPageResult.links || []).map((link: string) => `- ${link}`).join('\n')
       : '(None)'}`
   ].join('\n');
 
