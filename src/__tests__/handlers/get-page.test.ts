@@ -137,6 +137,27 @@ describe('handleGetPage', () => {
       expect(result.content[0]?.text).toContain('Page \"\" not found');
     });
 
+    test('collaboratorsがundefinedの場合にクラッシュしないこと', async () => {
+      const pageWithoutCollaborators = {
+        ...mockPageResponse,
+        collaborators: undefined,
+      };
+      const readablePageWithoutCollaborators = {
+        ...mockReadablePageResponse,
+        collaborators: undefined as unknown as typeof mockReadablePageResponse.collaborators,
+      };
+
+      mockedCosense.getPage.mockResolvedValue(pageWithoutCollaborators as never);
+      mockedCosense.toReadablePage.mockReturnValue(readablePageWithoutCollaborators);
+
+      const params = { pageTitle: 'Test Page' };
+      const result = await handleGetPage(mockProjectName, mockCosenseSid, params);
+
+      expect(result.isError).toBeUndefined();
+      expect(result.content[0]?.text).toContain('Title: Test Page');
+      expect(result.content[0]?.text).toContain('Other editors: ');
+    });
+
     test('APIエラーが発生した場合にエラーレスポンスを返すこと', async () => {
       const errorMessage = 'API Error';
       mockedCosense.getPage.mockRejectedValue(new Error(errorMessage));
