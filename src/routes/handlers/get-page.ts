@@ -50,7 +50,7 @@ export async function handleGetPage(
     ].join('\n');
 
     // 本文を追加
-    const contentText = readablePage.lines.map(line => line.text).join('\n');
+    const contentText = (readablePage.lines || []).map(line => line.text).join('\n');
 
     // リンク情報を追加
     const links = readablePage.links || [];
